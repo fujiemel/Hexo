@@ -1,0 +1,47 @@
+<div class="sea-page-card-wrapper sea-archive-card">
+  <div class="sea-archive-container">
+    {% set currentYear = '' %}
+    {% for post in page.posts.toArray() %}
+      {% set postYear = date(post.date, 'YYYY') %}
+      {% if postYear !== currentYear %}
+        {% set currentYear = postYear %}
+        <div class="sea-archive-year-group">
+          <div class="sea-archive-year-header">
+            <div class="sea-archive-year-text">{{ currentYear }}</div>
+            <div class="sea-archive-year-dot-container">
+               <div class="sea-archive-year-dot"></div>
+            </div>
+            <div class="sea-archive-year-count">
+               {% set yearCount = 0 %}
+               {% for p in page.posts.toArray() %}
+                 {% if date(p.date, 'YYYY') == currentYear %}
+                   {% set yearCount = yearCount + 1 %}
+                 {% endif %}
+               {% endfor %}
+               {{ yearCount }} {{ __('page.postsCount') }}
+            </div>
+          </div>
+      {% endif %}
+
+      <a href="{{ url_for(post.path) }}" class="sea-archive-item">
+        <div class="sea-archive-item-date">{{ date(post.date, 'MM-DD') }}</div>
+        <div class="sea-archive-item-dot-container">
+          <div class="sea-archive-item-dot"></div>
+        </div>
+        <div class="sea-archive-item-title">{{ post.title }}</div>
+        <div class="sea-archive-item-tags">
+          {% for tag in post.tags.toArray() %}
+            <span class="sea-archive-item-tag">#{{ tag.name }}</span>
+          {% endfor %}
+        </div>
+      </a>
+
+      {% set nextPost = page.posts.toArray()[loop.index0 + 1] %}
+      {% if loop.last or (nextPost and date(nextPost.date, 'YYYY') !== currentYear) %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+{{ partial('_partial/main/pagination') }}

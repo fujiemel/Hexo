@@ -1,0 +1,28 @@
+home:
+  recommendedPosts: 推荐文章
+  recentPosts: 最近文章
+  allPosts: 所有文章
+
+page:
+  contents: 目录
+  categories: 分类
+  search: Search
+  tags: 标签
+  tagcloud: 标签云
+  archive: 归档
+  recent_articles: 最近文章
+  archive_total: 共计 %d 篇文章！
+  postsCount: 篇文章
+  search_dev_tip: 🔍 开发模式警告！您需要先构建一次项目才能看到搜索结果。
+
+theme:
+  auto: 跟随系统
+  light: 浅色模式
+  dark: 深色模式
+
+footer:
+  home: 首页
+  site_pv: 'PV: %s'
+  site_uv: 'UV: %s'
+  rss: RSS
+  theme_source: Theme by %s

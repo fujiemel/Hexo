@@ -1,0 +1,104 @@
+/* Mermaid Container Styles */
+.mermaid-diagram-container {
+  position: relative;
+  width: 100%;
+  margin: 1.5rem 0;
+  background: var(--sea-color-main-bg);
+  border: 1px solid var(--sea-color-divider);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.mermaid-diagram-container:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-color: var(--sea-color-primary);
+}
+
+.mermaid-wrapper {
+  width: 100%;
+  overflow: hidden;
+  cursor: grab;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.mermaid-wrapper:active {
+  cursor: grabbing;
+}
+
+.mermaid {
+  transition: transform 0.1s ease-out;
+  transform-origin: center center;
+}
+
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Controls */
+.mermaid-controls {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mermaid-diagram-container:hover .mermaid-controls {
+  opacity: 1;
+}
+
+.mermaid-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: var(--sea-color-bg-soft);
+  border: 1px solid var(--sea-color-divider);
+  color: var(--sea-color-text-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1.2rem;
+  user-select: none;
+}
+
+.mermaid-btn:hover {
+  background: var(--sea-color-primary);
+  color: white;
+  border-color: var(--sea-color-primary);
+}
+
+/* Loading State */
+.mermaid-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: var(--sea-color-text-2);
+  font-size: 0.9rem;
+}
+
+.mermaid-loading::after {
+  content: "";
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--sea-color-divider);
+  border-top-color: var(--sea-color-primary);
+  border-radius: 50%;
+  animation: mermaid-spin 1s linear infinite;
+}
+
+@keyframes mermaid-spin {
+  to { transform: rotate(360deg); }
+}

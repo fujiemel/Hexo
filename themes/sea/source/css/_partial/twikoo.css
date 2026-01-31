@@ -1,0 +1,49 @@
+#tcomment {
+  margin-top: 2rem;
+  padding: 2rem;
+  background-color: var(--sea-bg-card);
+  border-radius: var(--sea-radius-lg);
+  box-shadow: var(--sea-shadow-sm);
+}
+
+/* Twikoo Dark Mode Adaptation */
+.tk-content {
+  color: var(--sea-text-main) !important;
+}
+
+.tk-nick {
+  color: var(--sea-text-main) !important;
+}
+
+.tk-time {
+  color: var(--sea-text-light) !important;
+}
+
+.tk-action-icon svg {
+  fill: var(--sea-primary) !important;
+}
+
+.tk-submit {
+  border-color: var(--sea-border) !important;
+}
+
+.tk-input {
+  background-color: var(--sea-bg-soft) !important;
+  border-color: var(--sea-border) !important;
+  color: var(--sea-text-main) !important;
+}
+
+.tk-preview {
+  background-color: var(--sea-bg-soft) !important;
+  border-color: var(--sea-border) !important;
+}
+
+.tk-send {
+  background-color: var(--sea-primary) !important;
+  color: #fff !important;
+}
+
+.tk-tag-green {
+  background-color: var(--sea-primary-op) !important;
+  color: var(--sea-primary) !important;
+}

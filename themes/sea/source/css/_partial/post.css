@@ -1,0 +1,172 @@
+.sea-article-content {
+  word-break: break-word;
+  margin-top: 1.5rem;
+}
+
+.sea-article-title {
+  font-size: 1.75rem;
+  text-align: center;
+}
+
+.sea-post-meta {
+  color: var(--sea-color-text-2);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: 1.5rem;
+  row-gap: 0.5rem;
+}
+
+.sea-post-time,
+.sea-post-tags,
+.sea-post-categories {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+  transition: color 0.3s ease;
+}
+
+.sea-post-tags:hover,
+.sea-post-categories:hover  {
+  color: var(--sea-color-primary);
+}
+
+.sea-post-meta__center {
+  justify-content: center;
+}
+
+.sea-article-catalog-title {
+  display: flex;
+  align-items: center;
+}
+
+.sea-article-catalog-title .sea-svg-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-right: .5rem;
+  cursor: pointer;
+}
+
+.sea-article-catalog-title .sea-svg-icon.sea-svg-icon-rotate {
+  transform: rotate(90deg);
+}
+
+.sea-article-catalog > .toc {
+  display: none;
+}
+
+.sea-article-catalog > .toc.sea-article-catalog-show {
+  display: block;
+}
+
+.sea-article-catalog .toc,
+.sea-article-catalog .toc-child {
+  list-style-type: disc;
+  padding-left: 1.8rem;
+}
+
+.sea-article-catalog .toc-number {
+  display: none;
+}
+
+.sea-article-catalog .toc-item {
+  margin-top: 1rem;
+}
+
+.sea-article-catalog .toc-link {
+  text-decoration: none;
+  color: inherit;
+  padding: .5rem 0;
+  font-weight: 500;
+}
+
+.sea-article-catalog .toc-link:hover {
+  color: var(--sea-color-primary);
+}
+
+.sea-post-top-flag {
+  color: var(--sea-color-primary);
+  font-weight: 600;
+  margin-left: 0.5rem;
+  font-size: 0.9em;
+}
+
+/**
+ * Encrypt Styles
+ */
+.sea-encrypt-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 1rem;
+  background: var(--sea-color-bg-soft);
+  border-radius: 1rem;
+  margin: 2rem 0;
+  border: 1px dashed var(--sea-color-divider);
+}
+
+.sea-encrypt-box {
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.sea-encrypt-icon {
+  color: var(--sea-color-primary);
+  margin-bottom: 1.5rem;
+  opacity: 0.8;
+}
+
+.sea-encrypt-desc {
+  font-size: 1.1rem;
+  color: var(--sea-color-text-1);
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+.sea-encrypt-input-group {
+  display: flex;
+  gap: 0.5rem;
+  background: var(--sea-color-main-bg);
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--sea-color-divider);
+  transition: border-color 0.3s ease;
+}
+
+.sea-encrypt-input-group:focus-within {
+  border-color: var(--sea-color-primary);
+}
+
+.sea-encrypt-input-group input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0.5rem 0.75rem;
+  color: var(--sea-color-text-1);
+  font-size: 1rem;
+}
+
+.sea-encrypt-input-group button {
+  background: var(--sea-color-primary);
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.sea-encrypt-input-group button:hover {
+  opacity: 0.9;
+}
+
+.sea-encrypt-error {
+  color: var(--sea-color-danger);
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  font-weight: 500;
+}

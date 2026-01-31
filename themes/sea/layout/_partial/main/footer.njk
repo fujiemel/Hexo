@@ -1,0 +1,71 @@
+<footer id="sea-footer-container">
+  <div class="sea-footer-row">
+    <div class="sea-footer-menu-link">
+      {% for item in theme.socialLink %}
+        <a
+          class="sea-footer-link"
+          {% if item.link.startsWith("http") %}
+            target="_blank"
+          {% endif %}
+          href="{{ url_for(item.link) }}"
+        >
+          {{ item.name }}
+        </a>
+        <span class="sea-footer-link__dot">·</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="sea-footer-row">
+    <div class="sea-footer-custom" style="text-align: center; margin-bottom: 0.5rem;">
+      <p style="margin: 0.2rem 0;">网站已稳定运行：<span id="runtime">正在加载...</span></p>
+      <p style="margin: 0.2rem 0;"><a href="https://icp.gov.moe/?keyword=20259970" target="_blank" style="color: inherit; text-decoration: none;">萌ICP备20259970号</a></p>
+    </div>
+  </div>
+
+  {% set current = moment().year() %}
+  {% set since = moment(theme.footer.builtUpTime).year() %}
+  <div class="sea-footer-row">
+    <div class="sea-footer-copyright">
+      <span>©</span>
+      {% if current > since %}
+        {{ since + '-' + current }}
+      {% else %}
+        {{ current }}
+      {% endif %}
+      <span>·</span>
+      {{ config.author }}
+    </div>
+    <span class="split-line">|</span>
+    <div class="sea-footer-theme-by">
+      {{ _p('footer.theme_source', '<a class="theme" href="https://github.com/hai-zou/hexo-theme-sea" target="_blank">Sea</a>') }}
+    </div>
+  </div>
+
+  <script>
+    (function() {
+        const siteStartDate = new Date('{{ theme.footer.builtUpTime or "2025/11/01 00:00:00" }}'.replace(/-/g, '/')); 
+        const runtimeElement = document.getElementById('runtime');
+        function updateRuntime() {
+            const now = new Date();
+            const diff = now - siteStartDate;
+            if (diff < 0) {
+                runtimeElement.innerHTML = '网站启动日期尚未到达！';
+                return;
+            }
+            let totalSeconds = Math.floor(diff / 1000);
+            const seconds = totalSeconds % 60;
+            totalSeconds = Math.floor(totalSeconds / 60);
+            const minutes = totalSeconds % 60;
+            totalSeconds = Math.floor(totalSeconds / 60);
+            const hours = totalSeconds % 24;
+            const days = Math.floor(totalSeconds / 24);
+            const formatNumber = (num) => String(num).padStart(2, '0');
+            const runtimeString = `${days} 天 ${formatNumber(hours)} 小时 ${formatNumber(minutes)} 分 ${formatNumber(seconds)} 秒`;
+            runtimeElement.innerHTML = runtimeString;
+        }
+        updateRuntime();
+        setInterval(updateRuntime, 1000);
+    })();
+  </script>
+</footer>

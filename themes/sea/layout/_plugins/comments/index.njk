@@ -1,0 +1,13 @@
+{% if theme.comment.enable and page.comments %}
+  {% if theme.comment.type === 'waline' %}
+    {{ partial('_plugins/comments/waline') }}
+  {% endif %}
+
+  {% if theme.comment.type === 'twikoo' %}
+    {{ partial('_plugins/comments/twikoo') }}
+  {% endif %}
+
+  {% if theme.comment.type === 'giscus' %}
+    {{ partial('_plugins/comments/giscus') }}
+  {% endif %}
+{% endif %}

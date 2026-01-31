@@ -1,0 +1,70 @@
+/* Button Styles */
+.sea-btn {
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+  margin: 0.25rem;
+}
+
+.sea-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.sea-btn-primary {
+  background-color: var(--sea-color-primary);
+  color: white !important;
+}
+
+.sea-btn-primary:hover {
+  opacity: 0.9;
+}
+
+.sea-btn-secondary {
+  background-color: var(--sea-color-bg-soft);
+  color: var(--sea-color-text-1) !important;
+  border-color: var(--sea-color-divider);
+}
+
+.sea-btn-secondary:hover {
+  background-color: var(--sea-color-primary);
+  color: white !important;
+  border-color: var(--sea-color-primary);
+}
+
+/* Gallery Styles */
+.sea-gallery {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.sea-gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  margin: 0 !important;
+  transition: transform 0.3s ease;
+}
+
+.sea-gallery img:hover {
+  transform: scale(1.02);
+}
+
+.sea-gallery-2 { grid-template-columns: repeat(2, 1fr); }
+.sea-gallery-3 { grid-template-columns: repeat(3, 1fr); }
+.sea-gallery-4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 768px) {
+  .sea-gallery-3, .sea-gallery-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .sea-gallery { grid-template-columns: 1fr; }
+}

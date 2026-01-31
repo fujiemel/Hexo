@@ -1,0 +1,51 @@
+<div class="sea-page-card-wrapper">
+  <h1 class="sea-page-card-title">{{ page.title }}</h1>
+  <div class="sea-article-content sea-doc">
+    {{ render(page.content) }}
+  </div>
+
+  <div class="sea-footprints-list">
+    {% set footprints = load_config_data('footprints') %}
+    {% for spot in footprints %}
+      <div class="sea-footprint-item">
+        <div class="sea-footprint-meta">
+          <span class="sea-footprint-date">{{ spot.date }}</span>
+          <span class="sea-footprint-location">{{ spot.location }}</span>
+        </div>
+        <div class="sea-footprint-activity">{{ spot.activity }}</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.sea-footprints-list {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sea-footprint-item {
+  padding: 1rem;
+  background-color: var(--sea-bg-soft);
+  border-radius: var(--sea-radius-lg);
+  border: 1px solid var(--sea-border);
+}
+
+.sea-footprint-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: var(--sea-text-light);
+  margin-bottom: 0.5rem;
+}
+
+.sea-footprint-date {
+  font-weight: bold;
+}
+
+.sea-footprint-activity {
+  color: var(--sea-text-main);
+}
+</style>

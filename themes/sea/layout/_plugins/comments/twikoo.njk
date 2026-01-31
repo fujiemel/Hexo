@@ -1,0 +1,27 @@
+<div id="tcomment" class="sea-page-card-wrapper"></div>
+<script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/twikoo@1.6.39/dist/twikoo.all.min.js'"></script>
+<script>
+  (function() {
+    const initTwikoo = () => {
+      if (typeof twikoo === 'undefined') {
+        setTimeout(initTwikoo, 100);
+        return;
+      }
+      twikoo.init({
+        envId: '{{ theme.twikoo.envId }}',
+        el: '#tcomment',
+        lang: '{{ theme.twikoo.lang | default("zh-CN") }}',
+        region: '{{ theme.twikoo.region }}',
+        path: '{{ theme.twikoo.path | default(url_for(page.path)) }}'
+      }).catch(err => {
+        console.error('[TWIKOO] Init Error:', err);
+      });
+    };
+
+    if (document.readyState === 'complete') {
+      initTwikoo();
+    } else {
+      window.addEventListener('load', initTwikoo);
+    }
+  })();
+</script>

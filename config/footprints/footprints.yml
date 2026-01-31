@@ -1,0 +1,8 @@
+- date: "2025-01-01"
+  location: "北京"
+  activity: "故宫游玩"
+  images: ["/images/footprints/gugong.jpg"]
+- date: "2024-10-01"
+  location: "上海"
+  activity: "外滩夜景"
+  images: ["/images/footprints/waitan.jpg"]
