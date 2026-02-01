@@ -6,7 +6,7 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write  # 核心修改：改为 write 以解决 403 权限问题
   pages: write
   id-token: write
 
@@ -22,6 +22,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
+          fetch-depth: 0 # 完整拉取，对某些 Hexo 主题计算日期有帮助
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -37,12 +38,13 @@ jobs:
         run: pnpm install
 
       - name: Build
-        run: pnpm run build
+        # 确保这里只执行生成静态文件的操作，不要触发 hexo deploy
+        run: pnpm run build 
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./public
+          path: ./public # 确保 Hexo 生成的目录是 public
 
   deploy:
     environment:
