@@ -4,100 +4,622 @@
     {{ render(page.content) }}
   </div>
 
-  <div class="sea-footprints-timeline">
-    {% set footprints = load_config_data('footprints') %}
-    {% for spot in footprints %}
-      <div class="sea-footprint-node">
-        <div class="sea-footprint-dot"></div>
-        <div class="sea-footprint-content">
-          <div class="sea-footprint-header">
-            <span class="sea-footprint-date">{{ spot.date }}</span>
-            <span class="sea-footprint-location">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-              {{ spot.location }}
-            </span>
-          </div>
-          <div class="sea-footprint-activity">{{ spot.activity }}</div>
-          {% if spot.images and spot.images.length > 0 %}
-            <div class="sea-footprint-gallery">
-              {% for img in spot.images %}
-                <div class="sea-footprint-image">
-                  <img src="{{ url_for(img) }}" alt="{{ spot.activity }}" loading="lazy">
-                </div>
-              {% endfor %}
-            </div>
-          {% endif %}
-        </div>
+  <div class="sea-footprint-container onload-animation">
+    <div class="sea-footprint-sidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-title">足迹列表</span>
+        <span class="sidebar-count">{{ load_config_data('footprints') | length }} 个地点</span>
       </div>
-    {% endfor %}
+      <div class="sidebar-content" id="footprint-list">
+        <!-- 列表项将由 JS 动态生成 -->
+      </div>
+    </div>
+    <div id="map" class="sea-footprint-map"></div>
   </div>
 </div>
 
+<!-- Leaflet CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <style>
-.sea-footprints-timeline {
-  margin-top: 2.5rem;
+.sea-footprint-container {
+  margin-top: 2rem;
+  margin-bottom: 3rem;
   position: relative;
-  padding-left: 2rem;
-}
-
-.sea-footprints-timeline::before {
-  content: '';
-  position: absolute;
-  left: 0.5rem;
-  top: 0.5rem;
-  bottom: 0.5rem;
-  width: 2px;
-  background: var(--sea-border);
-}
-
-.sea-footprint-node {
-  position: relative;
-  margin-bottom: 2.5rem;
-}
-
-.sea-footprint-node:last-child {
-  margin-bottom: 0;
-}
-
-.sea-footprint-dot {
-  position: absolute;
-  left: -2rem;
-  top: 0.5rem;
-  width: 1rem;
-  height: 1rem;
-  background: var(--sea-bg-main);
-  border: 2px solid var(--sea-color-primary);
-  border-radius: 50%;
-  z-index: 1;
+  height: 600px; /* 增加高度，适应更宽的屏幕布局 */
+  overflow: hidden;
+  border: 1px solid var(--sea-border-color);
+  border-radius: var(--sea-radius-lg);
+  display: flex;
+  background: var(--sea-bg-card);
+  box-shadow: var(--sea-shadow-sm);
+  
+  /* Wide 布局：比 800px 宽，但两边留白 */
+  width: 92vw;
+  max-width: 1300px; /* 限制最大宽度，避免超大屏拉伸过度 */
+  left: 50%;
   transform: translateX(-50%);
 }
 
-.sea-footprint-content {
-  background: var(--sea-bg-soft);
-  padding: 1.25rem;
-  border-radius: var(--sea-radius-lg);
-  border: 1px solid var(--sea-border);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.sea-footprint-map {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
 }
 
-.sea-footprint-content:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--sea-shadow-lg);
-}
-
-.sea-footprint-header {
+/* 自定义地图标记样式：箭头标记 */
+.custom-marker {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
-  font-size: 0.875rem;
-  color: var(--sea-text-light);
+  justify-content: center;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.sea-footprint-date {
-  font-family: var(--sea-font-family-mono);
-  font-weight: 600;
+.marker-pin {
+  width: 28px;
+  height: 28px;
+  color: #FF5252; /* 改为红色 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marker-pin svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+
+/* 暗色模式下增加发光效果 */
+.dark .marker-pin {
+  filter: drop-shadow(0 0 5px rgba(255, 82, 82, 0.6));
+}
+
+.custom-marker:hover {
+  transform: translateY(-4px) scale(1.2);
+  z-index: 1000 !important;
+}
+
+.custom-marker:hover .marker-pin {
+  color: #FF1744; /* 悬浮时颜色加深 */
+}
+
+/* 侧边栏样式 - 极致缩小并优化比例 */
+.sea-footprint-sidebar {
+  width: 140px; /* 进一步缩小至 140px，为大地图腾出更多空间 */
+  height: 100%;
+  background: var(--sea-bg-card);
+  border-right: 1px solid var(--sea-border-color);
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.sidebar-header {
+  padding: 0.75rem 0.8rem;
+  border-bottom: 1px solid var(--sea-border-color);
+  background: var(--sea-bg-card-glass);
+  backdrop-filter: blur(10px);
+}
+
+.sidebar-title {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--sea-text-main);
+  letter-spacing: 0.02em;
+}
+
+.sidebar-count {
+  font-size: 0.65rem;
+  color: var(--sea-text-muted);
+  opacity: 0.7;
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.25rem;
+}
+
+.sidebar-content::-webkit-scrollbar {
+  width: 2px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+  background: var(--sea-border-color);
+  border-radius: 10px;
+}
+
+/* 适配移动端列表项 */
+@media (max-width: 768px) {
+  .province-group {
+    display: flex;
+    overflow-x: auto;
+    padding: 0.5rem;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--sea-border-color);
+    background: var(--sea-bg-soft);
+  }
+  
+  .province-header {
+    position: static;
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0;
+    margin-bottom: 0;
+    font-size: 0.7rem;
+    background: var(--sea-primary);
+    color: #fff;
+    border-radius: 50%;
+  }
+  
+  .province-count {
+    display: none;
+  }
+  
+  .footprint-item {
+    flex-shrink: 0;
+    width: 140px;
+    padding: 0.5rem;
+    background: var(--sea-bg-card);
+    border: 1px solid var(--sea-border-color);
+    border-radius: var(--sea-radius-md);
+    margin-bottom: 0;
+  }
+  
+  .footprint-item::before {
+    display: none;
+  }
+}
+
+/* 侧边栏分组样式 */
+.province-group {
+  margin-bottom: 0.5rem;
+}
+
+.province-header {
+  padding: 0.4rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 700;
   color: var(--sea-color-primary);
+  background: var(--sea-bg-main);
+  border-radius: var(--sea-radius-sm);
+  margin-bottom: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.province-count {
+  font-size: 0.6rem;
+  opacity: 0.6;
+  font-weight: normal;
+}
+
+.footprint-item {
+  padding: 0.5rem 0.6rem 0.5rem 1.2rem; /* 增加左边距，形成层级感 */
+  margin-bottom: 0.1rem;
+  border-radius: var(--sea-radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  position: relative;
+}
+
+.footprint-item::before {
+  content: '';
+  position: absolute;
+  left: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 12px;
+  background: var(--sea-border-color);
+  border-radius: 1px;
+}
+
+.footprint-item.active::before {
+  background: var(--sea-color-primary);
+}
+
+.footprint-item:hover {
+  background: var(--sea-bg-main);
+}
+
+.footprint-item.active {
+  background: var(--sea-color-primary-light);
+  border-color: var(--sea-color-primary-light);
+}
+
+.footprint-item.active .item-name {
+  color: var(--sea-color-primary);
+}
+
+.item-name {
+  display: block;
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--sea-text-main);
+  margin-bottom: 0.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-date {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.65rem;
+  color: var(--sea-text-muted);
+}
+
+.item-date::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: #FF5252;
+  border-radius: 50%;
+}
+
+/* 响应式调整 */
+@media (max-width: 1400px) {
+  .sea-footprint-container {
+    width: 95vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .sea-footprint-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 600px;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    left: 0;
+    right: 0;
+    transform: none;
+    border-radius: var(--sea-radius-lg);
+    border: 1px solid var(--sea-border-color);
+  }
+  .sea-footprint-sidebar {
+    width: 100%;
+    height: 250px; /* 移动端列表高度稍微增加，方便滑动 */
+    border-right: none;
+    border-bottom: 1px solid var(--sea-border-color);
+  }
+  .sea-footprint-map {
+    height: 350px; /* 移动端地图固定高度 */
+  }
+  .footprint-item {
+    padding: 0.7rem 0.8rem 0.7rem 1.4rem; /* 增加触控区域 */
+  }
+  .item-name {
+    font-size: 0.9rem; /* 移动端字体稍微加大 */
+  }
+}
+
+/* Tooltip 样式定制 */
+.sea-map-tooltip {
+  background: var(--sea-bg-card-glass) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid var(--sea-border-color) !important;
+  border-radius: 12px !important;
+  color: var(--sea-text-main) !important;
+  padding: 10px 14px !important;
+  font-size: 13px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+  opacity: 1 !important;
+}
+
+.sea-map-tooltip::before {
+  border-top-color: var(--sea-border-color) !important;
+}
+
+.sea-map-tooltip .tooltip-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: block;
+  color: var(--sea-color-primary);
+  font-size: 14px;
+}
+
+.sea-map-tooltip .tooltip-date {
+  font-size: 11px;
+  color: var(--sea-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--sea-border-color);
+}
+
+.sea-map-tooltip .tooltip-desc {
+  line-height: 1.5;
+  color: var(--sea-text-main);
+  opacity: 0.9;
+}
+
+
+/* 地图底色适配暗色模式 */
+.leaflet-container {
+  background: var(--sea-bg-main) !important;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  let footprints = [];
+  try {
+    footprints = {{ load_config_data('footprints') | dump | safe }} || [];
+  } catch (e) {
+    console.error('Failed to load footprints data:', e);
+  }
+  
+  // 中国地图边界参考
+  const chinaBounds = L.latLngBounds([15.0, 70.0], [55.0, 140.0]);
+  
+  // 地图初始化
+  const map = L.map('map', {
+    center: [35.8617, 104.1954], // 中国地理中心
+    zoom: 4,
+    minZoom: 3,
+    maxZoom: 18,
+    zoomControl: false,
+    attributionControl: false // 隐藏右下角版权信息，让地图更清爽
+  });
+
+  // 添加版权信息到左下角或保持简洁
+  L.control.attribution({
+    position: 'bottomleft'
+  }).addTo(map);
+
+  L.control.zoom({
+    position: 'bottomright'
+  }).addTo(map);
+
+  // 中文地图瓦片服务配置
+  // 浅色模式使用高德地图
+  const lightTiles = L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}', {
+    subdomains: ['1', '2', '3', '4'],
+    attribution: '&copy; <a href="https://www.amap.com/">高德地图</a>',
+    noWrap: true
+  });
+  
+  // 深色模式使用 CartoDB Dark Matter (更稳定)
+  const darkTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{y}/{x}{r}.png', {
+    attribution: '&copy; <a href="https://carto.com/">CartoDB</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+  });
+
+  /**
+   * 坐标转换：WGS-84 (GPS) -> GCJ-02 (火星坐标系)
+   * 中国地图服务(高德/腾讯)普遍使用 GCJ-02，如果不转换，坐标会有几百米的偏移
+   */
+  function wgs84togcj02(lng, lat) {
+    const PI = 3.1415926535897932384626;
+    const a = 6378245.0;
+    const ee = 0.00669342162296594323;
+
+    function transformlat(lng, lat) {
+      let ret = -100.0 + 2.0 * lng + 3.0 * lat + 0.2 * lat * lat + 0.1 * lng * lat + 0.2 * Math.sqrt(Math.abs(lng));
+      ret += (20.0 * Math.sin(6.0 * lng * PI) + 20.0 * Math.sin(2.0 * lng * PI)) * 2.0 / 3.0;
+      ret += (20.0 * Math.sin(lat * PI) + 40.0 * Math.sin(lat / 3.0 * PI)) * 2.0 / 3.0;
+      ret += (160.0 * Math.sin(lat / 12.0 * PI) + 320 * Math.sin(lat * PI / 30.0)) * 2.0 / 3.0;
+      return ret;
+    }
+
+    function transformlng(lng, lat) {
+      let ret = 300.0 + lng + 2.0 * lat + 0.1 * lng * lng + 0.1 * lng * lat + 0.1 * Math.sqrt(Math.abs(lng));
+      ret += (20.0 * Math.sin(6.0 * lng * PI) + 20.0 * Math.sin(2.0 * lng * PI)) * 2.0 / 3.0;
+      ret += (20.0 * Math.sin(lng * PI) + 40.0 * Math.sin(lng / 3.0 * PI)) * 2.0 / 3.0;
+      ret += (150.0 * Math.sin(lng / 12.0 * PI) + 300.0 * Math.sin(lng / 30.0 * PI)) * 2.0 / 3.0;
+      return ret;
+    }
+
+    let dlat = transformlat(lng - 105.0, lat - 35.0);
+    let dlng = transformlng(lng - 105.0, lat - 35.0);
+    let radlat = lat / 180.0 * PI;
+    let magic = Math.sin(radlat);
+    magic = 1 - ee * magic * magic;
+    let sqrtmagic = Math.sqrt(magic);
+    dlat = (dlat * 180.0) / ((a * (1 - ee)) / (magic * sqrtmagic) * PI);
+    dlng = (dlng * 180.0) / (a / sqrtmagic * Math.cos(radlat) * PI);
+    let mglat = lat + dlat;
+    let mglng = lng + dlng;
+    return [mglng, mglat];
+  }
+
+  // 转换坐标数据并缓存，避免重复计算
+  footprints.forEach(spot => {
+    if (spot.coordinate && spot.coordinate.length === 2) {
+      // WGS-84 -> GCJ-02 转换
+      const [mglng, mglat] = wgs84togcj02(spot.coordinate[1], spot.coordinate[0]);
+      spot._convertedCoord = [mglat, mglng];
+    }
+  });
+
+  // 主题切换逻辑
+  let currentTiles = null;
+  function updateMapTheme() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const newTiles = isDark ? darkTiles : lightTiles;
+    
+    if (currentTiles === newTiles) return;
+    
+    if (currentTiles) {
+      map.removeLayer(currentTiles);
+    }
+    
+    newTiles.addTo(map);
+    currentTiles = newTiles;
+  }
+
+  updateMapTheme();
+  
+  // 确保地图容器大小正确计算
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 100);
+  
+  // 监听主题变化
+  const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.attributeName === 'class') {
+        updateMapTheme();
+        setTimeout(() => map.invalidateSize(), 100);
+      }
+    });
+  });
+  observer.observe(document.documentElement, { attributes: true });
+
+  const markers = [];
+  const listContainer = document.getElementById('footprint-list');
+
+  // 按省份分组逻辑
+  const groupedFootprints = {};
+  footprints.forEach((spot, index) => {
+    if (spot._convertedCoord) {
+      // 优先级：显式 province 字段 > tags[0] > '其他'
+      const province = spot.province || (spot.tags && spot.tags[0]) || '其他';
+      if (!groupedFootprints[province]) {
+        groupedFootprints[province] = [];
+      }
+      groupedFootprints[province].push({ ...spot, originalIndex: index });
+    }
+  });
+
+  // 初始加载标记和分组列表
+  Object.keys(groupedFootprints).forEach(province => {
+    const provinceSpots = groupedFootprints[province];
+    
+    // 创建省份分组容器
+    const groupDiv = document.createElement('div');
+    groupDiv.className = 'province-group';
+    
+    // 创建省份标题
+    const header = document.createElement('div');
+    header.className = 'province-header';
+    header.innerHTML = `
+      <span>${province}</span>
+      <span class="province-count">${provinceSpots.length}</span>
+    `;
+    groupDiv.appendChild(header);
+    
+    provinceSpots.forEach(spot => {
+      const marker = createMarker(spot);
+      marker.addTo(map);
+      markers.push({ id: spot.originalIndex, marker, spot });
+      
+      // 创建侧边栏列表项
+      const listItem = document.createElement('div');
+      listItem.className = 'footprint-item';
+      listItem.innerHTML = `
+        <span class="item-name">${spot.name}</span>
+        <div class="item-date">${spot.date}</div>
+      `;
+      
+      listItem.onclick = () => {
+        // 移除其他项的激活状态
+        document.querySelectorAll('.footprint-item').forEach(el => el.classList.remove('active'));
+        listItem.classList.add('active');
+        
+        // 地图跳转
+        map.flyTo(spot._convertedCoord, 12, {
+          duration: 1.5
+        });
+        
+        // 自动打开 Tooltip
+        marker.openTooltip();
+
+        // 移动端点击后自动滚动到地图区域
+        if (window.innerWidth <= 768) {
+          const mapElement = document.getElementById('map');
+          mapElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      };
+      
+      groupDiv.appendChild(listItem);
+    });
+    
+    listContainer.appendChild(groupDiv);
+  });
+
+  function createMarker(spot) {
+    const marker = L.marker(spot._convertedCoord, {
+      icon: L.divIcon({
+        className: 'custom-marker',
+        html: `
+          <div class="marker-pin">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+          </div>
+        `,
+        iconSize: [30, 30],
+        iconAnchor: [15, 30] // 锚点在箭头尖端（底部中心）
+      })
+    });
+
+    // 绑定 Tooltip
+    const tooltipContent = `
+      <div class="sea-map-tooltip-inner">
+        <span class="tooltip-title">${spot.name}</span>
+        <span class="tooltip-date">${spot.date}</span>
+        <div class="tooltip-desc">${spot.desc || '暂无描述'}</div>
+      </div>
+    `;
+
+    marker.bindTooltip(tooltipContent, {
+      direction: 'top',
+      offset: [0, -32], // 调整偏移，使其显示在箭头上方
+      className: 'sea-map-tooltip',
+      opacity: 1,
+      sticky: false
+    });
+
+    return marker;
+  }
+
+  // 自动调整视野
+  if (footprints.length > 0) {
+    // 默认显示全中国视野
+    map.setView([35.8617, 104.1954], 4);
+    
+    const coords = footprints
+      .filter(spot => spot._convertedCoord)
+      .map(spot => spot._convertedCoord);
+    
+    // 如果有足迹，可以在侧边栏点击后跳转，初始保持全中国视野
+  }
+});
+</script>
+
+<style>
+/* 聚类样式适配 Sea 主题 */
+.sea-footprint-date .sea-svg-icon {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
 }
 
 .sea-footprint-location {

@@ -1,6 +1,6 @@
 <div id="sea-loading-bar"></div>
 
-<div class="sea-page-card-wrapper">
+<div class="sea-page-card-wrapper sea-anime-page-wrapper">
   <h1 class="sea-page-card-title">{{ page.title }}</h1>
   <div class="sea-article-content sea-doc">
     {{ render(page.content) }}
@@ -47,7 +47,7 @@
 
   <div class="sea-anime-container" id="anime-grid" data-json="{{ url_for('anime/index.json') }}">
     {# Skeleton Screen #}
-    {% for i in range(0, 6) %}
+    {% for i in range(0, 8) %}
       <div class="sea-anime-item sea-anime-skeleton">
         <div class="sea-anime-cover-wrapper"></div>
         <div class="sea-anime-info">

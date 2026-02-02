@@ -1,8 +1,78 @@
-- date: "2025-01-01"
-  location: "北京"
-  activity: "故宫游玩"
-  images: ["/images/footprints/gugong.jpg"]
-- date: "2024-10-01"
-  location: "上海"
-  activity: "外滩夜景"
-  images: ["/images/footprints/waitan.jpg"]
+- name: "宿迁沭阳"
+  province: "江苏"
+  coordinate: [34.1315, 118.7966]
+  date: "202X-XX"
+  desc: "花木之乡"
+  tags: ["江苏", "宿迁"]
+- name: "邯郸方特"
+  province: "河北"
+  coordinate: [36.28479, 114.39301]
+  date: "2025-08-25"
+  desc: "邯郸方特-国色春秋主题乐园"
+  tags: ["河北", "邯郸", "游乐园"]
+- name: "宿迁市区"
+  province: "江苏"
+  coordinate: [33.9630, 118.2751]
+  date: "202X-XX"
+  desc: "项王故里"
+  tags: ["江苏", "宿迁"]
+- name: "泰安泰山"
+  province: "山东"
+  coordinate: [36.2548, 117.1095]
+  date: "2025-05-02"
+  desc: "五岳之首"
+  tags: ["山东", "泰安", "爬山"]
+- name: "济南章丘"
+  province: "山东"
+  coordinate: [36.7129, 117.5437]
+  date: "2025-10-02"
+  desc: "百脉泉"
+  tags: ["山东", "济南"]
+- name: "洛阳老城区"
+  province: "河南"
+  coordinate: [34.6197, 112.4540]
+  date: "2025-08-26"
+  desc: "神都"
+  tags: ["河南", "洛阳", "古都"]
+- name: "栾川老君山"
+  province: "河南"
+  coordinate: [33.7330, 111.6420]
+  date: "2025-08-27"
+  desc: "远赴人间惊鸿宴"
+  tags: ["河南", "洛阳", "爬山"]
+- name: "安阳市区"
+  province: "河南"
+  coordinate: [36.0976, 114.3925]
+  date: "202X-XX"
+  desc: "殷墟"
+  tags: ["河南", "安阳"]
+- name: "安阳滑县"
+  province: "河南"
+  coordinate: [35.5771, 114.5260]
+  date: "202X-XX"
+  desc: "道口烧鸡"
+  tags: ["河南", "安阳"]
+- name: "安阳内黄"
+  province: "河南"
+  coordinate: [35.9596, 114.9005]
+  date: "202X-XX"
+  desc: "枣乡"
+  tags: ["河南", "安阳"]
+- name: "安阳汤阴"
+  province: "河南"
+  coordinate: [35.9232, 114.3655]
+  date: "202X-XX"
+  desc: "岳飞故里"
+  tags: ["河南", "安阳"]
+- name: "鹤壁山城区"
+  province: "河南"
+  coordinate: [35.8995, 114.1907]
+  date: "202X-XX"
+  desc: "山"
+  tags: ["河南", "鹤壁"]
+- name: "濮阳市区"
+  province: "河南"
+  coordinate: [35.7619, 115.0292]
+  date: "202X-XX"
+  desc: "龙都"
+  tags: ["河南", "濮阳"]

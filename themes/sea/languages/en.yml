@@ -1,7 +1,8 @@
 home:
   recommendedPosts: Recommended posts
   recentPosts: Recent posts
-  allPosts: All Posts
+  allPosts: View All
+  loadMore: Load More
 
 page:
   contents: Table of contents

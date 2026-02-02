@@ -64,23 +64,62 @@
 }
 
 .sea-index-all-posts {
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.sea-index-all-posts .sea-svg-icon {
-  width: .875rem;
-  height: .875rem;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
 }
 
 .sea-index-all-posts__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  line-height: 1;
+  text-decoration: none;
 }
 
-.sea-index-all-posts:hover .sea-index-all-posts__link {
+.sea-index-all-posts__link .sea-svg-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-left: 4px;
+}
+
+/* 复用加载按钮样式作为“显示全部”按钮 */
+.sea-load-more-btn {
+  padding: 0.6rem 2rem;
+  border-radius: 2rem;
+  border: 1px solid var(--sea-color-divider);
+  background-color: var(--sea-color-bg-1);
+  color: var(--sea-color-text-1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  outline: none;
+}
+
+.sea-load-more-btn:hover:not(:disabled) {
+  border-color: var(--sea-color-primary);
   color: var(--sea-color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.sea-load-more-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.sea-loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--sea-color-divider);
+  border-top: 2px solid var(--sea-color-primary);
+  border-radius: 50%;
+  animation: sea-spin 1s linear infinite;
+}
+
+@keyframes sea-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

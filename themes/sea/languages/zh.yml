@@ -1,7 +1,8 @@
 home:
   recommendedPosts: 推荐文章
   recentPosts: 最近文章
-  allPosts: 所有文章
+  allPosts: 显示全部
+  loadMore: 加载更多
 
 page:
   contents: 目录

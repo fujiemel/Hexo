@@ -16,7 +16,7 @@ lang: zh-CN
 本站是采用 Hexo 框架构建的，使用[Sea](https://github.com/harveyzo/hexo-theme-sea?tab=readme-ov-file)主题
 ::github{repo="harveyzo/hexo-theme-sea"}
 ## 本站简介
-本站使用**Github**托管代码，使用静态托管网站~~**Vercel**~~  Edgeone
+本站使用**Github**托管代码，使用静态托管网站~~**Vercel**~~  ~~Edgeone~~ Github pages
 白嫖**Edgeone**免费CDN加速服务  
 **Gemini**提供写作思路  
 图床采用**GitHub**+**PicGo**+**公益CDN**  
