@@ -1,24 +1,20 @@
 {
   "main": {
-    "id": "916e35daec1b3907",
+    "id": "61bd81faeaac8365",
     "type": "split",
     "children": [
       {
-        "id": "76a0004cc819bcf5",
+        "id": "780fef1107ca5d1c",
         "type": "tabs",
         "children": [
           {
-            "id": "ae169f7693df9323",
+            "id": "2735f4ce24d1afd0",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "_posts/2026-0130-Essay.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "2026-0130-Essay"
+              "title": "新标签页"
             }
           }
         ]
@@ -27,15 +23,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "254c9c6708169aed",
+    "id": "3fb545027505f4bc",
     "type": "split",
     "children": [
       {
-        "id": "eecb8fb78e879f61",
+        "id": "c8a3eb8880755334",
         "type": "tabs",
         "children": [
           {
-            "id": "13813487109fbbcb",
+            "id": "539e61a24f326cf0",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -48,7 +44,7 @@
             }
           },
           {
-            "id": "228d4427457f777d",
+            "id": "4f5d496c82e380a7",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -65,7 +61,7 @@
             }
           },
           {
-            "id": "a78b0368ede0536c",
+            "id": "ae080237722bc097",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -81,20 +77,19 @@
     "width": 300
   },
   "right": {
-    "id": "12acdc631ebbb004",
+    "id": "84446073a4455b89",
     "type": "split",
     "children": [
       {
-        "id": "1df541131a72fdf9",
+        "id": "f5ef0ca84d2b7b79",
         "type": "tabs",
         "children": [
           {
-            "id": "d38bd39f5a6179d4",
+            "id": "e962f408db0219ec",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "_posts/about-website.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,25 +99,24 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "about-website 的反向链接列表"
+              "title": "反向链接"
             }
           },
           {
-            "id": "0cda5a2a6b8ae26b",
+            "id": "e1862b3ebb66ac05",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "_posts/about-website.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "about-website 的出链列表"
+              "title": "出链"
             }
           },
           {
-            "id": "8d6cdfe6f56ad2b2",
+            "id": "056e70c7d556a6cc",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -137,18 +131,17 @@
             }
           },
           {
-            "id": "51e326991472ba82",
+            "id": "bb0a063ce70105bf",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "_posts/about-website.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "about-website 的大纲"
+              "title": "大纲"
             }
           }
         ]
@@ -165,25 +158,15 @@
       "canvas:新建白板": false,
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
-      "command-palette:打开命令面板": false
+      "command-palette:打开命令面板": false,
+      "obsidian-livesync:P2P Replicator": false,
+      "obsidian-livesync:Show Log": false,
+      "obsidian-livesync:Replicate": false,
+      "obsidian-livesync:Show Customization sync": false
     }
   },
-  "active": "ae169f7693df9323",
+  "active": "2735f4ce24d1afd0",
   "lastOpenFiles": [
-    "_posts/2026-0202-essay.md",
-    "_posts/about-website.md",
-    "_posts/August-2025-job.md",
-    "_posts/2026-0101-Essay.md",
-    "friends/index.md",
-    "_posts/2026-0130-Essay.md",
-    "_posts/2026-0121-Essay.md",
-    "_posts/2026-0117-Essay.md",
-    "_posts/2026-0112-Essay.md",
-    "_posts/2026-1-7-one-attack.md",
-    "_posts/2025-Annual_Summary.md",
-    "images/avatar.webp",
-    "footprints/index.md",
-    "anime/index.md",
-    "_posts/2025-1212-Essay.md"
+    "flag_rebuild.md"
   ]
 }
