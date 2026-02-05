@@ -28,6 +28,8 @@ menu:
     url: /friends/
   - name: 关于
     url: /about/
+  - name: 监控
+    url: https://uptimeflare.395718.xyz/
   - name: 开往
     url: https://www.travellings.cn/go.html
 
