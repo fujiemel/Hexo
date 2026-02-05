@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "_posts/about-website.md",
+                "file": "_posts/2026-0202-Essay.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "about-website"
+              "title": "2026-0202-Essay"
             }
           }
         ]
@@ -171,8 +171,11 @@
   },
   "active": "2735f4ce24d1afd0",
   "lastOpenFiles": [
-    "_posts/2026-0202-Essay.md",
     "_posts/2026-0130-Essay.md",
+    "_posts/2026-0202-Essay.md",
+    "_posts/2026-0130-Essay 1.md",
+    "_posts/2026-0202-Essay (2).md",
+    "_posts/2026-0202-essay.md",
     "_posts/about-website.md",
     "_posts/2026-0121-Essay.md",
     "flag_rebuild.md"
