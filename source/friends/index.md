@@ -13,7 +13,7 @@ layout: page
   ```
 {
 -   name: 
-    avatar: https://www.zhbi.top/Hexo/images/avatar.webp
+    avatar: https://www.zhbi.top/images/avatar.webp
     link: https://www.zhbi.top
     desc:"人生如登高，山川日月在目，而晳粊之光，独照我心 "
   }
